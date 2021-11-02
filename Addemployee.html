@@ -1,0 +1,135 @@
+<%@page import="java.io.PrintWriter"%>
+<html>
+<head>
+ <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+<script type="text/javascript">
+function check()
+{
+	
+	var id=document.getElementById("id").value;
+	var submit=document.getElementById("submit");
+	var xhttp;
+	 var alr=document.getElementById("alt");
+	if(id=="")
+		{
+		return;
+		}else
+			{
+			xhttp=new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() 
+			  {
+				  if(this.readyState == 4 && this.status == 200)
+					  {
+					  var val=this.responseText+"";
+					 
+					  if(val=="" || val==null)
+						  {
+						  submit.disabled=false;
+						  alr.innerHTML=" ";
+						  
+						  }else
+							  {
+							  submit.disabled=true;
+							
+							  alr.innerHTML="id is already taken."
+							  }
+					  }
+			  }
+			  xhttp.open("GET", "checkid?id="+id, true);
+			  xhttp.send();
+			}
+	
+	
+	
+}
+
+
+</script>
+<style type="text/css">
+p{
+color:red;
+}
+</style>
+</head>
+
+
+
+<body background="image/Background.jpg">
+<fieldset class="field_set">
+  <br>
+<div class="div_header"><br>
+<h1>Employee Salary Management</h1>
+<div align="left" style="margin-left: 1%"><h4>Manager Name:<span style="color: red"> <%=name%>!</span><span style="float: right">Logout? <a href="logout">Click Here!</a></span></h4></div></div>
+</fieldset></body><br>
+<div class="div">
+
+<br>
+<center>
+<a href="mhome.jsp"><button class="button">Employee Details</button></a>
+<a href="Addemployee.jsp"><button class="button">Add Employee</button></a>
+<a href="approve.jsp"><button class="button">Pending Request</button></a>
+<a href="mpaidsalary.jsp"><button class="button">Paid salary</button></a>
+<a href="mnote.jsp"><button class="button">Employee leavenote</button></a>
+<br><br>
+<h2>Add Employee</h2>
+
+<form action="addemployee" method="post">
+<table>
+<tr>
+<th>Category:</th>
+<th><select>
+<option>type1</option>
+<option>type2</option>
+<option>type3</option>
+</select></th>
+
+</tr>
+<tr>
+<th>EMPLOYEE ID</th> 
+<th><input type="text" id="id" name="empid" class="input" onblur="check()"required></th><th><p>
+<span id="alt"></span></p></th>
+</tr>
+
+<tr>
+<th>NAME</th> 
+<th><input type="text" name="name" class="input" required></th>
+</tr>
+
+<tr>
+<th>GENDER</th> 
+<th><input type="radio" name="gender" value="male" >  MALE
+<input type="radio" name="gender" value="female">  FEMALE
+<input type="radio" name="gender" value="other"> OTHER
+</th>
+</tr>
+
+<tr>
+<th>DOB</th> <th><input type="date" name="bod" class="input" style="font-size: 12px" required></th>
+</tr>
+
+<tr>
+<th>ADDRESS</th> <th><textarea rows="4" cols="21" name="address" class="input" required></textarea></th>
+</tr>
+
+<tr>
+<th>E-MAIL</th> <th><input type="email" name="email" class="input" required></th>
+</tr>
+<tr>
+<th>PHONE:</th>
+<th><input type="tel" name="phone" class="input" required></th>
+</tr>
+
+
+
+
+</table>
+<button type="submit" class="button" id="submit" disabled>SUBMIT</button>
+</form>
+</center>
+
+
+
+</body>
+<%} %>
+</html>

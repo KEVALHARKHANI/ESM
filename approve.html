@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/styles.css">
+<style>
+table, td, th {  
+  border:0px  solid black;
+  text-align: left;
+  border-radius:10px;
+    box-shadow:0 0 5px black;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  padding: 15px;
+}
+</style>
+<script type="text/javascript">
+function edit(a)
+{
+	var e=document.getElementById(a);
+	var r=document.getElementById("reason"+a);
+	e.disabled=false;
+	if(r.type=="hidden")
+		{
+		r.type="text"
+		}
+	}
+
+
+
+</script>
+</head>
+<body background="image/Background.jpg">
+<fieldset class="field_set">
+  <br>
+<div class="div_header"><br>
+<h1>Employee Salary Management</h1><div align="left" style="margin-left: 1%"><h4>Manager Name:<span style="color: red"> <%=name%>!</span><span style="float: right">Logout? <a href="logout">Click Here!</a></span></h4></div></div>
+</fieldset></body><br>
+<div class="div">
+
+<br>
+<center>
+<a href="mhome.jsp"><button class="button">Employee Details</button></a>
+<a href="Addemployee.jsp"><button class="button">Add Employee</button></a>
+<a href="approve.jsp"><button class="button">Pending Request</button></a>
+<a href="mpaidsalary.jsp"><button class="button">Paid salary</button></a>
+<a href="mnote.jsp"><button class="button">Employee leavenote</button></a>
+<br><br>
+<center>
+<form action="approve" method="post">
+<%
+PrintWriter pw=response.getWriter();
+Connection con=null;
+try {
+	Class.forName("com.mysql.jdbc.Driver");
+	 con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/esm","root","");
+	PreparedStatement pr=(PreparedStatement) con.prepareStatement("select * from work where approve=? order by date asc");
+	pr.setString(1, "1");
+	ResultSet rs = pr.executeQuery();
+	
+	if(rs.next())
+	{
+		Date dt=null;
+		rs.beforeFirst();
+		while(rs.next())
+		{
+			
+			
+			if(rs.getRow()!=1 && dt.equals(rs.getDate("date")))
+			{
+				
+				%><tr>
+				<td><%=rs.getString("name") %></td><td><input type="text" id=<%=rs.getInt("id") %> value=<%=rs.getString("money") %> name=<%=rs.getInt("id") %> disabled><a href="#" onclick="edit(<%=rs.getInt("id") %>)">edit</a></td><td><%=rs.getString("details") %></td><td ><input type="hidden" id="reason<%=rs.getInt("id") %>" name="reason<%=rs.getInt("id") %>"></td>
+				</tr>
+				
+				<%
+			}
+			else
+			{
+				dt=rs.getDate("date");
+				System.out.print(dt);
+			%></table>
+				<h4>Date:<%=rs.getDate("date") %></h4>
+				
+				<table>
+				<tr>
+				<th>NAME:</th><th>AMOUNT</th><th>DISCRIPTION:</th><th>REASON:</th>
+				</tr>
+				<tr>
+				<td><%=rs.getString("name") %></td><td><input type="text" id=<%=rs.getInt("id") %> value=<%=rs.getString("money") %> name=<%=rs.getInt("id") %> disabled><a href="#" onclick="edit(<%=rs.getInt("id") %>)">edit</a></td><td><%=rs.getString("details") %></td><td ><input type="hidden" id="reason<%=rs.getInt("id") %>" name="reason<%=rs.getInt("id") %>"></td>
+				</tr>
+
+
+				
+				
+				
+			<%}
+			if(rs.isLast())
+			{
+				%>
+				</table>
+				<%
+			}
+			
+			
+			 
+		}
+	%>
+	<br>
+	<BUTTON class="button" type="submit" value="approve">APPROVE</BUTTON>
+	</form>
+</center><% 
+	}
+	else
+	{%>
+	<h3>No Any pending request!</h3>
+		
+	<%}
+} catch (SQLException e) {
+	e.printStackTrace();
+} catch (ClassNotFoundException e) {
+	e.printStackTrace();
+}finally
+{
+	con.close();
+}
+}
+	%>
+	
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <style type="text/css">
+        input[type=text] {
+    width: 80%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid gray;
+    border-radius: 4px;
+}
+    </style>
+    <script type="text/javascript">
+    function showall()
+    { 
+    	
+    	xhttp=new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() 
+		  {
+			  if(this.readyState == 4 && this.status == 200)
+				  {
+				  var val=this.responseText;
+				 document.getElementById("show").innerHTML=val;
+				  
+				  }
+		  }
+		 
+		  xhttp.open("GET", "showemployee?all=yes", true);
+		  xhttp.send(); 
+    }
+    
+    
+    function call(id,typ)
+    { 
+    	
+    	xhttp=new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() 
+		  {
+			  if(this.readyState == 4 && this.status == 200)
+				  {
+				  var val=this.responseText;
+				 document.getElementById("show").innerHTML=val;
+				  
+				  }
+		  }
+		 
+		  xhttp.open("GET", "showemployee?"+typ+"="+id, true);
+		  xhttp.send();
+    }
+    function submit()
+    {
+    	var id=document.getElementById("details").value;
+    	id=id.trim();
+    	
+    	var load=document.getElementById("load");
+    	if(id==null ||id=="")
+    		{
+    			alert("please enter a id or name");
+    		}else
+    			{
+    	if(isNaN(id))
+    		{
+    		var typ="name";
+    		call(id,typ);
+    		return true;
+    		}else
+    			{
+    			var typ="id";
+    			call(id,typ);
+    			return true;
+    			}
+    			
+    			}
+    	
+    }
+    
+    function forid()
+    {
+    	var from=document.getElementById("date_from");
+    	var to=document.getElementById("date_to");
+    	var search=document.getElementById("date_search");
+    	from.type="hidden";
+    	to.type="hidden";
+    	search.type="hidden"
+    	
+    	var id=document.getElementById("id_details");
+    	var search=document.getElementById("id_search");
+    	id.type="text";
+    	search.type="button";
+    	
+    }
+    function fordate()
+    {
+    	var id=document.getElementById("id_details");
+    	var search=document.getElementById("id_search");
+    	id.type="hidden";
+    	search.type="hidden";
+    	var from=document.getElementById("date_from");
+    	var to=document.getElementById("date_to");
+    	var search=document.getElementById("date_search");
+    	document.getElementById("to").innerHTML="to: ";
+    	document.getElementById("from").innerHTML="from: ";
+    	from.type="date";
+    	to.type="date";
+    	search.type="button"
+    	
+    }
+    function gettyp(typ)
+    {
+    	
+    	
+    	if(typ=="By ID")
+    		{
+    		forid();
+    		}else
+    			{
+    			fordate();
+    			}
+    }
+    
+    
+    </script>
+
+</head>
+
+
+<body background="image/Background.jpg">
+<fieldset class="field_set">
+  <br>
+<div class="div_header"><br>
+<h1>Employee Salary Management</h1>
+<div align="left" style="margin-left: 1%"><h4>Manager Name:<span style="color: red"> <%=name%>!</span><span style="float: right">Logout? <a href="logout">Click Here!</a></span></h4></div></div>
+</fieldset></body><br>
+<div class="div">
+
+<br>
+<center>
+<a href="mhome.jsp"><button class="button">Employee Details</button></a>
+<a href="Addemployee.jsp"><button class="button">Add Employee</button></a>
+<a href="approve.jsp"><button class="button">Pending Request</button></a>
+<a href="#"><button class="button">Paid salary</button></a>
+<a href="mnote.jsp"><button class="button">Employee leavenote</button></a>
+<div class="div"><br><br>
+<select name="typ" onchange="gettyp(this.value)">
+<option selected="selected">Select</option>
+<option vlaue="id">By ID</option>
+<option value="date">By Date</option>
+</select>
+<br>
+<br>
+<br>
+<!-- search by date -->
+
+<span style="font-size: 20px" id="from"></span><input style="font-size:15px " type="hidden" id="date_from" placeholder="from">
+<span style="font-size: 20px" id="to"></span><input style="font-size:15px " type="hidden" id="date_to" placeholder="to"><br>
+<input class="button" type="hidden" id="date_search" value="search">
+
+
+
+
+<!-- search by id -->
+
+<input type="hidden" name="details" id="id_details" placeholder="Enter Employee ID"><br>
+<input class="button" type="hidden"  id="id_search" value="search" onclick="return submit()">
+
+</div>
+<span id="show"></span>
+</center>
+
+
+
+</body>
+</html>
